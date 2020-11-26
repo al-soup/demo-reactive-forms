@@ -14,12 +14,27 @@
   <li>Easier unit testing</li>
 </ul>
 <br>
-<form [formGroup]="myForm" (ngSubmit)="onSubmit(myForm)">
+
+<form [formGroup]="myForm">
   <mat-form-field appearance="fill">
     <mat-label>Name</mat-label>
     <input matInput formControlName="name">
   </mat-form-field>
   <br>
+  <mat-form-field appearance="fill">
+    <mat-label>Age</mat-label>
+    <input matInput formControlName="age" type="number">
+  </mat-form-field>
+  <mat-error *ngFor="let validation of validationMsg">
+    <mat-error
+      *ngIf="myForm.get('age')?.hasError(validation.type) && (myForm.get('age')?.dirty || myForm.get('age')?.touched)">
+      {{validation.message}}
+    </mat-error>
+  </mat-error>
+  <br>
 
-  <button mat-stroked-button type="submit" [disabled]="!myForm.valid">Send</button>
+  <button mat-stroked-button (click)="onUppercase()">⬆️</button>
+  <button mat-stroked-button (click)="onReset()">️️Reset</button>
+  <button mat-stroked-button type="submit" [disabled]="!myForm.valid" (click)="onSubmit(myForm)">Send</button>
 </form>
+<p>Are you happy?: {{ happyStatus }}</p>

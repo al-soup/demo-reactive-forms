@@ -1,22 +1,42 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-reactive-forms',
   templateUrl: './reactive-forms.component.html'
 })
-export class ReactiveFormsComponent implements OnInit {
+export class ReactiveFormsComponent implements OnInit, OnDestroy {
+
+  public readonly MIN_AGE = 16;
+  public validationMsg = [
+    { type: 'required', message: 'Age is required' },
+    { type: 'min', message: `Must be at least ${this.MIN_AGE} years old!` }
+  ];
+  public happyStatus = 'Getting there';
 
   public myForm!: FormGroup;
+  public sub!: Subscription;
 
   public ngOnInit(): void {
     // Reactive Form Setup
     this.myForm = new FormGroup({ // Group different controls in an object (also interesting `FormArray`)
       name: new FormControl(
         null, // initial value
-        [Validators.required, Validators.minLength(3)] // Way more possible (e.g. Email, Number stuff or Regex)
+        [Validators.required, Validators.minLength(3)] // Way more possible (e.g. Email, Regex or write your own (advanced))
       ),
+      age: new FormControl(null, {
+        validators: Validators.compose([Validators.required, Validators.min(this.MIN_AGE)]),
+        updateOn: 'change' // | 'submit' | 'blur'
+      }),
     });
+
+    this.sub = this.myForm.valueChanges
+    .pipe(
+      map(value => value.name === ':)' ?   '😃' : 'Almost...')
+    )
+    .subscribe(value => this.happyStatus = value);
 
       /**
        * The same using the FormBilder helper class would look something like this:
@@ -33,5 +53,25 @@ export class ReactiveFormsComponent implements OnInit {
   public onSubmit(form: FormGroup): void {
     alert(`Name: ${form.value.name}`);
   }
+
+  // Getters and setters
+  public onUppercase(): void {
+    const currentName: string = this.myForm.get('name')?.value;
+    if (currentName) {
+      this.myForm.patchValue({ name: currentName.toUpperCase() }); // partially (alt. `.setValue(...) for the whole group)
+    }
+  }
+
+  public onReset(): void {
+    this.myForm.reset();
+  }
+
+  // DON'T FORGET TO UNSUBSCRIBE!
+  public ngOnDestroy(): void {
+    if (this.sub) {
+      this.sub.unsubscribe();
+    }
+  }
+
 
 }
