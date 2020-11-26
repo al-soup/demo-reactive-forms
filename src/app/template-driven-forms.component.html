@@ -1,0 +1,21 @@
+<h1>Template Driven Forms</h1>
+<ul>
+  <li>Easy to use</li>
+  <li>Suitable for simple scenarios and fails for complex scenarios </li>
+  <li>Similar to AngularJS</li>
+  <li>Two way data binding(using
+    <pre>[(NgModel)]</pre> syntax)</li>
+  <li>Minimal component code</li>
+  <li>Automatic track of the form and its data(handled by Angular)</li>
+  <li>Unit testing is another challenge</li>
+</ul>
+<br>
+<form (ngSubmit)="onSubmit()">
+  <mat-form-field appearance="fill">
+    <mat-label>Name</mat-label>
+    <input matInput required [(ngModel)]="name" name="name">
+  </mat-form-field>
+  <br>
+
+  <button mat-stroked-button type="submit" [disabled]="!isNameValid(name)">Send</button>
+</form>
