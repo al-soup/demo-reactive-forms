@@ -7,14 +7,14 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { ReactiveFormsComponent } from './reactive-forms.component';
-import { TemplateDrivenFormsComponent } from './template-driven-forms.component';
 import { InfosComponent } from './infos.component';
+import { TemplateDrivenFormsComponent } from './template-driven-forms.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    TemplateDrivenFormsComponent,
     ReactiveFormsComponent,
+    TemplateDrivenFormsComponent,
     InfosComponent
   ],
   imports: [

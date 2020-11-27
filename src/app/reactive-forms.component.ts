@@ -23,7 +23,7 @@ export class ReactiveFormsComponent implements OnInit, OnDestroy {
     this.myForm = new FormGroup({ // Group different controls in an object (also interesting `FormArray`)
       name: new FormControl(
         null, // initial value
-        [Validators.required, Validators.minLength(3)] // Way more possible (e.g. Email, Regex or write your own (advanced))
+        [Validators.required, Validators.minLength(3)] // More are possible (e.g. Email, Regex or write your own!)
       ),
       // Or crate a control like this:
       age: new FormControl(
@@ -56,7 +56,7 @@ export class ReactiveFormsComponent implements OnInit, OnDestroy {
   }
 
   public onSubmit(form: FormGroup): void {
-    alert(`Name: ${form.value.name}`);
+    alert(`${form.value.name} is ${form.value.age} years old.`);
   }
 
   // Getters and setters

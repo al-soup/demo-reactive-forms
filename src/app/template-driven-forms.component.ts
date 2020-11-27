@@ -2,7 +2,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-template-dirven-forms',
+  selector: 'app-template-driven-forms',
   templateUrl: './template-driven-forms.component.html'
 })
 export class TemplateDrivenFormsComponent {
