@@ -25,7 +25,7 @@
     <mat-label>Age</mat-label>
     <input matInput formControlName="age" type="number">
   </mat-form-field>
-  <mat-error *ngFor="let validation of validationMsg">
+  <mat-error *ngFor="let validation of validationMessages">
     <mat-error
       *ngIf="myForm.get('age')?.hasError(validation.type) && (myForm.get('age')?.dirty || myForm.get('age')?.touched)">
       {{validation.message}}

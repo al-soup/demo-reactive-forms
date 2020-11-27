@@ -11,9 +11,9 @@ export class ReactiveFormsComponent implements OnInit, OnDestroy {
 
   public readonly MIN_AGE = 16;
   public happyStatus = 'Getting there';
-  public validationMsg = [
+  public validationMessages = [
     { type: 'required', message: 'Age is required' },
-    { type: 'min', message: `Must be at least ${this.MIN_AGE} years old!` }
+    { type: 'min', message: `Must be at least ${this.MIN_AGE} years old` }
   ];
   public myForm!: FormGroup;
   private sub!: Subscription;
@@ -25,6 +25,7 @@ export class ReactiveFormsComponent implements OnInit, OnDestroy {
         null, // initial value
         [Validators.required, Validators.minLength(3)] // Way more possible (e.g. Email, Regex or write your own (advanced))
       ),
+      // Or crate a control like this:
       age: new FormControl(
         null,
         {
@@ -34,6 +35,17 @@ export class ReactiveFormsComponent implements OnInit, OnDestroy {
       ),
     });
 
+    /**
+     * The same using the FormBilder helper class would look something like this:
+     *
+     * constructor(formBuilder: FormBuilder) {
+     *   this.form = fb.group({
+     *       "name": [this.name, [Validators.required, Validators.minLength(3)]],
+     *        ...
+     *   });
+     * }
+     */
+
     this.sub = this.myForm.valueChanges
       .pipe(
         map(value => value.name === ':)' ? '😃' : 'Almost...')
@@ -41,17 +53,6 @@ export class ReactiveFormsComponent implements OnInit, OnDestroy {
         // ...
       )
       .subscribe(value => this.happyStatus = value);
-
-      /**
-       * The same using the FormBilder helper class would look something like this:
-       *
-       * constructor(formBuilder: FormBuilder) {
-       *   this.form = fb.group({
-       *       "name": [this.name, [Validators.required, Validators.minLength(3)]],
-       *        ...
-       *   });
-       * }
-       */
   }
 
   public onSubmit(form: FormGroup): void {
@@ -62,7 +63,7 @@ export class ReactiveFormsComponent implements OnInit, OnDestroy {
   public onUppercase(): void {
     const currentName: string = this.myForm.get('name')?.value;
     if (currentName) {
-      this.myForm.patchValue({ name: currentName.toUpperCase() }); // partially (alt. `.setValue(...) for the whole group)
+      this.myForm.patchValue({ name: currentName.toUpperCase() }); // partially (alt. `.setValue(...)` for the whole group)
     }
   }
 
