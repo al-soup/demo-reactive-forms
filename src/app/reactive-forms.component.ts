@@ -10,14 +10,13 @@ import { map } from 'rxjs/operators';
 export class ReactiveFormsComponent implements OnInit, OnDestroy {
 
   public readonly MIN_AGE = 16;
+  public happyStatus = 'Getting there';
   public validationMsg = [
     { type: 'required', message: 'Age is required' },
     { type: 'min', message: `Must be at least ${this.MIN_AGE} years old!` }
   ];
-  public happyStatus = 'Getting there';
-
   public myForm!: FormGroup;
-  public sub!: Subscription;
+  private sub!: Subscription;
 
   public ngOnInit(): void {
     // Reactive Form Setup
@@ -26,17 +25,22 @@ export class ReactiveFormsComponent implements OnInit, OnDestroy {
         null, // initial value
         [Validators.required, Validators.minLength(3)] // Way more possible (e.g. Email, Regex or write your own (advanced))
       ),
-      age: new FormControl(null, {
-        validators: Validators.compose([Validators.required, Validators.min(this.MIN_AGE)]),
-        updateOn: 'change' // | 'submit' | 'blur'
-      }),
+      age: new FormControl(
+        null,
+        {
+          validators: Validators.compose([Validators.required, Validators.min(this.MIN_AGE)]),
+          updateOn: 'change' // 'submit' | 'blur'
+        }
+      ),
     });
 
     this.sub = this.myForm.valueChanges
-    .pipe(
-      map(value => value.name === ':)' ?   '😃' : 'Almost...')
-    )
-    .subscribe(value => this.happyStatus = value);
+      .pipe(
+        map(value => value.name === ':)' ? '😃' : 'Almost...')
+        // filter(...)
+        // ...
+      )
+      .subscribe(value => this.happyStatus = value);
 
       /**
        * The same using the FormBilder helper class would look something like this:
