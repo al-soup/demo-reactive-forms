@@ -1,0 +1,40 @@
+<h1>Reactive Forms (Model Driven Forms)</h1>
+<ul>
+  <li>More flexible, but needs a lot of practice</li>
+  <li>Handles any complex scenarios</li>
+  <li>No data binding is done (immutable data model preferred by most developers)</li>
+  <li>More component code and less HTML markup</li>
+  <li>Reactive transformations can be made possible such as
+    <ul>
+      <li>Handling a event based on a debounce time </li>
+      <li>Handling events when the components are distinct until changed</li>
+      <li>Adding elements dynamically</li>
+    </ul>
+  </li>
+  <li>Easier unit testing</li>
+</ul>
+<br>
+
+<form [formGroup]="myForm">
+  <mat-form-field appearance="fill">
+    <mat-label>Name</mat-label>
+    <input matInput formControlName="name">
+  </mat-form-field>
+  <br>
+  <mat-form-field appearance="fill">
+    <mat-label>Age</mat-label>
+    <input matInput formControlName="age" type="number">
+  </mat-form-field>
+  <mat-error *ngFor="let validation of validationMessages">
+    <mat-error
+      *ngIf="myForm.get('age')?.hasError(validation.type) && (myForm.get('age')?.dirty || myForm.get('age')?.touched)">
+      {{validation.message}}
+    </mat-error>
+  </mat-error>
+  <br>
+
+  <button mat-stroked-button (click)="onUppercase()">⬆️</button>
+  <button mat-stroked-button (click)="onReset()">️️Reset</button>
+  <button mat-stroked-button type="submit" [disabled]="!myForm.valid" (click)="onSubmit(myForm)">Send</button>
+</form>
+<p>Are you happy?: {{ happyStatus }}</p>
